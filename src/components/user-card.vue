@@ -16,3 +16,12 @@
   padding: 0 8px;
 }
 </style>
+
+<script>
+export default {
+  name: "UserCard",
+  data: () => ({
+    miniVariant: true
+  })
+};
+</script>

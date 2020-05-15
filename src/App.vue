@@ -27,6 +27,7 @@
     </v-app-bar>
 
     <v-content>
+      <NavDrawer v-if="$route.name !== 'Login'" />
       <router-view />
     </v-content>
 
@@ -35,15 +36,19 @@
 </template>
 
 <script>
+import NavDrawer from "./views/NavDrawer";
+
 export default {
   name: "App",
 
+  components: {
+    NavDrawer
+  },
   data: vm => ({
     initialDark: vm.$vuetify ? vm.$vuetify.theme.dark : false,
     logoNutricare: require("@/assets/nutricare_logo.png"),
     namelogoNutricare: require("@/assets/nutricare_namelogo.png"),
-    goDark: false,
-    expandOnHover: true
+    goDark: false
   }),
 
   beforeDestroy() {
