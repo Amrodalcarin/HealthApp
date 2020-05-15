@@ -2,6 +2,8 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
+import Food from "../views/Food.vue";
+import FoodGrid from "../views/FoodGrid.vue";
 
 Vue.use(VueRouter);
 
@@ -15,6 +17,17 @@ const routes = [
     path: "/login",
     name: "Login",
     component: Login
+  },
+  {
+    path: "/food/:foodId",
+    name: "Food",
+    component: Food,
+    props: true
+  },
+  {
+    path: "/searchfood",
+    name: "SearchFood",
+    component: FoodGrid
   },
   {
     path: "/about",

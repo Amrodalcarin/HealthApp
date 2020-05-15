@@ -3,6 +3,7 @@
     v-model="drawer"
     :expand-on-hover="expandOnHover"
     :mini-variant="miniVariant"
+    :permanent="permanent"
     absolute
     dark
   >
@@ -20,7 +21,8 @@ export default {
   data: () => ({
     expandOnHover: true,
     miniVariant: true,
-    drawer: true
+    drawer: true,
+    permanent: true
   })
 };
 </script>
