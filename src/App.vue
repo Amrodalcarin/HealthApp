@@ -27,7 +27,9 @@
     </v-app-bar>
 
     <v-content>
-      <NavDrawer v-if="$route.name !== 'Login'" />
+      <NavDrawer
+        v-if="$route.name !== 'Login' && $route.name !== 'Register' && $route.name !== 'Messages'"
+      />
       <router-view />
     </v-content>
 
