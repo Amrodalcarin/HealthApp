@@ -44,7 +44,6 @@ export default {
   },
   methods: {
     getNutrients(val) {
-      this.loading = true;
       axios
         .post(
           "https://api.edamam.com/api/food-database/nutrients?app_id=2642ad12&app_key=320f1c564ed52ec564d56995ef7089b2",
@@ -64,6 +63,7 @@ export default {
         .catch(error => console.log(error));
     },
     getFood(val) {
+      this.loading = true;
       axios
         .get(
           "https://api.edamam.com/api/food-database/parser?ingr=" +

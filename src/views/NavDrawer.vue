@@ -9,6 +9,8 @@
   >
     <UserCard />
     <v-divider></v-divider>
+    <v-btn class="my-2" color="secondary" v-on:click="profile()">Profile</v-btn>
+    <v-btn class="my-2" color="secondary" v-on:click="logout()">Logout</v-btn>
   </v-navigation-drawer>
 </template>
 
@@ -23,6 +25,14 @@ export default {
     miniVariant: true,
     drawer: true,
     permanent: true
-  })
+  }),
+  methods: {
+    logout() {
+      localStorage.clear();
+      this.$router.push({
+        name: "Login"
+      });
+    }
+  }
 };
 </script>
