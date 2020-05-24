@@ -1,12 +1,12 @@
 <template>
   <v-list-item two-line :class="miniVariant">
     <v-list-item-avatar>
-      <img src="https://randomuser.me/api/portraits/men/1.jpg" />
+      <img :src="avatar" />
     </v-list-item-avatar>
 
     <v-list-item-content>
-      <v-list-item-title>{{userData.email}}</v-list-item-title>
-      <v-list-item-subtitle>Subtext</v-list-item-subtitle>
+      <v-list-item-title>{{username}}</v-list-item-title>
+      <v-list-item-subtitle>{{email}}</v-list-item-subtitle>
     </v-list-item-content>
   </v-list-item>
 </template>
@@ -18,11 +18,15 @@
 </style>
 
 <script>
+const fb = require("../../firebaseConfig");
+
 export default {
   name: "UserCard",
   data: () => ({
     miniVariant: true,
-    userData: JSON.parse(localStorage.getItem("userData"))
+    username: fb.auth.currentUser.displayName,
+    email: fb.auth.currentUser.email,
+    avatar: fb.auth.currentUser.photoURL
   })
 };
 </script>

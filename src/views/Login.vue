@@ -6,6 +6,7 @@
           <v-toolbar color="primary" dark flat>
             <v-toolbar-title>Inicio de sesión</v-toolbar-title>
             <v-spacer />
+            <v-btn color="secondary" :to="{ path: 'register/'}">Registrarse</v-btn>
           </v-toolbar>
           <v-card-text>
             <v-form>
@@ -32,7 +33,6 @@
           <v-card-actions>
             <v-spacer />
             <v-btn color="primary" @click="login()">Entrar</v-btn>
-            <v-btn color="secondary" :to="{ path: 'register/'}">Registrarse</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -41,54 +41,24 @@
 </template>
 
 <script>
-import GoTrue from "gotrue-js";
+const fb = require("../../firebaseConfig");
 
 export default {
   data: () => ({
     email: "",
-    password: "",
-    auth: new GoTrue({
-      APIUrl: "https://nutricare.online/.netlify/identity",
-      audience: "",
-      setCookie: false
-    })
+    password: ""
   }),
   methods: {
     login() {
-      this.auth
-        .login(this.email, this.password)
-        .then(response => {
-          localStorage.setItem("userLoggedIn", true);
-          localStorage.setItem("userData", JSON.stringify(response));
-          this.$router.push({
-            name: "Home"
-          });
-        })
-        .catch(error => console.log("It's an error", error));
-    }
-  },
-  props: ["confirmToken"],
-  created() {
-    if (this.confirmToken) {
-      this.auth
-        .confirm(this.confirmToken)
+      fb.auth
+        .signInWithEmailAndPassword(this.email, this.password)
         .then(() => {
-          this.$router.push({
-            name: "Messages",
-            params: {
-              message: "Account confirmed successfully. Now you can log in.",
-              redirectLogin: true
-            }
-          });
+          this.$router.push({ name: "Home" });
         })
-        .catch(error => {
-          this.$router.push({
-            name: "Messages",
-            params: { message: "Error: " + error }
-          });
+        .catch(err => {
+          console.log(err);
         });
     }
-    // this.logUser(this.email, this.password).then(() => (logSuccess = true));
   }
 };
 </script>

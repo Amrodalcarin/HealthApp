@@ -9,6 +9,7 @@
           </v-toolbar>
           <v-card-text>
             <v-form>
+              <v-text-field label="Username" name="username" type="text" v-model="username" />
               <v-text-field label="Email" name="email" type="text" v-model="email" />
 
               <v-text-field
@@ -31,37 +32,37 @@
 </template>
 
 <script>
-import GoTrue from "gotrue-js";
+const fb = require("../../firebaseConfig");
 
 export default {
-  props: {
-    source: String
-  },
   data: () => ({
     email: "",
     password: "",
-    auth: new GoTrue({
-      APIUrl: "https://nutricare.online/.netlify/identity",
-      audience: "",
-      setCookie: false
-    })
+    username: ""
   }),
   methods: {
     register() {
-      this.auth
-        .signup(this.email, this.password)
+      fb.auth
+        .createUserWithEmailAndPassword(this.email, this.password)
         .then(() => {
-          this.$router.push({
-            name: "Messages",
-            params: {
-              message:
-                "An email has been sent to " +
-                this.email +
-                ". Please click on the link we sent to you to confirm your account."
-            }
-          });
+          this.fillUser();
         })
-        .catch(error => console.log("It's an error", error));
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    fillUser() {
+      const user = fb.auth.currentUser;
+      user
+        .updateProfile({
+          displayName: this.username
+        })
+        .then(() => {
+          this.$router.push({ name: "Home" });
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 };

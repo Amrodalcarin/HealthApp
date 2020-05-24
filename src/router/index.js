@@ -3,19 +3,15 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
+import Profile from "../views/Profile.vue";
 import Food from "../views/Food.vue";
 import FoodGrid from "../views/FoodGrid.vue";
 import Messages from "../views/Messages.vue";
+const fb = require("../../firebaseConfig");
 
 Vue.use(VueRouter);
 
 const routes = [
-  {
-    path: "/",
-    name: "Home",
-    component: Home,
-    props: true
-  },
   {
     path: "/messages",
     name: "Messages",
@@ -32,6 +28,17 @@ const routes = [
     path: "/register",
     name: "Register",
     component: Register
+  },
+  {
+    path: "/",
+    name: "Home",
+    component: Home,
+    props: true
+  },
+  {
+    path: "/user",
+    name: "Profile",
+    component: Profile
   },
   {
     path: "/food/:foodId",
@@ -51,24 +58,11 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 });
-
 router.beforeEach((to, from, next) => {
-  let hash = window.location.hash.substr(1);
-  let result = hash.split("&").reduce(function (result, item) {
-    let parts = item.split("=");
-    result[parts[0]] = parts[1];
-    return result;
-  }, {});
-  if (result.confirmation_token && to.name !== 'Login') {
-    router.push({
-      name: "Login",
-      params: { confirmToken: result.confirmation_token }
-    });
-  }
-  else {
-    if (to.name !== 'Login' && to.name !== 'Register' && to.name !== 'Messages' && !localStorage.getItem('userLoggedIn')) next({ name: 'Login' })
-    else next()
-  }
+
+  if (to.name !== 'Login' && to.name !== 'Register' && to.name !== 'Messages' && !fb.auth.currentUser) next({ name: 'Login' })
+  else next()
+
 
 })
 
