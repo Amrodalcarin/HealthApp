@@ -1,7 +1,12 @@
 <template>
   <v-app>
     <v-app-bar app color="primary" dark>
-      <div class="d-flex align-center">
+      <v-icon
+        @click="drawer = !drawer"
+        v-if="$route.name !== 'Login' && $route.name !== 'Register' && $route.name !== 'Messages'"
+      >fa-bars</v-icon>
+      <v-spacer></v-spacer>
+      <div class="d-flex align-center" @click="home()">
         <v-img
           alt="NutriCare Logo"
           class="shrink mr-2"
@@ -23,17 +28,21 @@
 
       <v-spacer></v-spacer>
 
-      <v-switch v-model="$vuetify.theme.dark" hide-details inset label="Tema oscuro" color="info"></v-switch>
+      <v-switch
+        v-model="$vuetify.theme.dark"
+        hide-details
+        inset
+        prepend-icon="fa-moon"
+        color="info"
+      ></v-switch>
     </v-app-bar>
 
     <v-content>
-      <NavDrawer
-        v-if="$route.name !== 'Login' && $route.name !== 'Register' && $route.name !== 'Messages'"
-      />
+      <NavDrawer :drawer="drawer" />
       <router-view />
     </v-content>
 
-    <v-footer app>Holi soy el footer</v-footer>
+    <!-- <v-footer app>Nutricare - 2020</v-footer> -->
   </v-app>
 </template>
 
@@ -50,9 +59,16 @@ export default {
     initialDark: vm.$vuetify ? vm.$vuetify.theme.dark : false,
     logoNutricare: require("@/assets/nutricare_logo.png"),
     namelogoNutricare: require("@/assets/nutricare_namelogo.png"),
-    goDark: false
+    goDark: false,
+    drawer: null
   }),
-
+  methods: {
+    home() {
+      this.$router.push({
+        name: "Home"
+      });
+    }
+  },
   beforeDestroy() {
     if (!this.$vuetify) return;
 

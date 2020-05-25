@@ -1,15 +1,17 @@
 import Vue from "vue";
 import Vuetify from "vuetify/lib";
 
-Vue.use(Vuetify);
+Vue.use(Vuetify, {
+    iconfont: 'fa'
+})
 
 export default new Vuetify({
     theme: {
-        dark: false,
+        dark: true,
         themes: {
             dark: {
-                primary: '#8bc34a',
-                secondary: '#cddc39',
+                primary: '#2F855A',
+                secondary: '#643C21',
                 accent: '#795548',
                 error: '#f44336',
                 warning: '#ffc107',
@@ -17,8 +19,8 @@ export default new Vuetify({
                 success: '#4caf50'
             },
             light: {
-                primary: '#8bc34a',
-                secondary: '#cddc39',
+                primary: '#2F855A',
+                secondary: '#643C21',
                 accent: '#795548',
                 error: '#f44336',
                 warning: '#ffc107',

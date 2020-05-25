@@ -20,9 +20,13 @@
     </v-card-text>
 
     <v-card-actions>
-      <v-btn color="green" text>Share</v-btn>
+      <v-btn
+        color="secondary"
+        text
+        @click="setConsumedCalories(foodCal?foodCal.toFixed(2):0.00)"
+      >Add to calories</v-btn>
 
-      <v-btn color="green" text :to="{ path: 'food/'+foodId}">Explore</v-btn>
+      <v-btn color="primary" text :to="{ path: 'food/'+foodId}">View More</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -39,6 +43,19 @@ export default {
     "foodCarb",
     "foodFib",
     "foodId"
-  ]
+  ],
+  methods: {
+    setConsumedCalories(calories) {
+      const actualConsumedCalories = localStorage.getItem(
+        "consumedDayCalories"
+      );
+      const newConsumedCaloriesPercentaje =
+        (calories * 100) / parseInt(localStorage.getItem("totalDayCalories"));
+      localStorage.setItem(
+        "consumedDayCalories",
+        parseFloat(actualConsumedCalories) + newConsumedCaloriesPercentaje
+      );
+    }
+  }
 };
 </script>
