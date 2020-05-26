@@ -9,14 +9,15 @@
             <v-btn color="secondary" :to="{ path: 'register/'}">Registrarse</v-btn>
           </v-toolbar>
           <v-card-text>
-            <v-form>
+            <v-form ref="form" v-model="valid">
               <v-text-field
                 label="Email"
                 name="login"
                 prepend-icon="fa-envelope"
                 type="text"
                 v-model="email"
-                @keypress.enter="login()"
+                :rules="[rules.required, rules.emailValid] "
+                @keypress.enter="validate"
               />
 
               <v-text-field
@@ -26,13 +27,14 @@
                 prepend-icon="fa-lock"
                 type="password"
                 v-model="password"
-                @keypress.enter="login()"
+                :rules="[rules.required]"
+                @keypress.enter="validate"
               />
             </v-form>
           </v-card-text>
           <v-card-actions>
             <v-spacer />
-            <v-btn color="primary" @click="login()">Entrar</v-btn>
+            <v-btn color="primary" @click="validate">Entrar</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -45,10 +47,22 @@ const fb = require("../../firebaseConfig");
 
 export default {
   data: () => ({
+    valid: true,
     email: "",
-    password: ""
+    password: "",
+    rules: {
+      required: value => !!value || "Required",
+      emailValid: value =>
+        /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
+        "E-mail must be valid"
+    }
   }),
   methods: {
+    validate() {
+      if (this.$refs.form.validate()) {
+        this.login();
+      }
+    },
     login() {
       fb.auth
         .signInWithEmailAndPassword(this.email, this.password)

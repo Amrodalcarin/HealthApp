@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer v-model="drawer" absolute temporary dark>
+  <v-navigation-drawer v-model="drawer" absolute dark>
     <UserCard />
     <v-divider></v-divider>
     <v-list>
@@ -40,7 +40,9 @@
 </template>
 
 <script>
-import UserCard from "./../components/user-card";
+import UserCard from "./../components/UserCard";
+const fb = require("../../firebaseConfig");
+
 export default {
   components: {
     UserCard
@@ -65,9 +67,14 @@ export default {
     },
     logout() {
       localStorage.clear();
-      this.$router.push({
-        name: "Login"
-      });
+      fb.auth
+        .signOut()
+        .then(() => {
+          this.$router.push({ name: "Login" });
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 };
