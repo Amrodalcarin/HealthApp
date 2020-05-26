@@ -18,7 +18,7 @@
 
         <v-img
           alt="NutriCare Name"
-          class="shrink mt-1 hidden-sm-and-down"
+          class="shrink mt-1"
           contain
           min-width="100"
           :src="namelogoNutricare"
@@ -38,7 +38,10 @@
     </v-app-bar>
 
     <v-content>
-      <NavDrawer :drawer="drawer" />
+      <NavDrawer
+        v-if="$route.name !== 'Login' && $route.name !== 'Register' && $route.name !== 'Messages'"
+        :drawer="drawer"
+      />
       <router-view />
     </v-content>
 
@@ -60,7 +63,7 @@ export default {
     logoNutricare: require("@/assets/nutricare_logo.png"),
     namelogoNutricare: require("@/assets/nutricare_namelogo.png"),
     goDark: false,
-    drawer: null
+    drawer: false
   }),
   methods: {
     home() {

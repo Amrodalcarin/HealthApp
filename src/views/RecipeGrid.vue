@@ -22,7 +22,7 @@
               class="mx-8"
               flat
               hide-details
-              label="Search"
+              label="Search for recipes"
               prepend-inner-icon="fa-search"
               solo-inverted
               v-model="searchWord"

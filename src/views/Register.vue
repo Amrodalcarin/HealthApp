@@ -8,22 +8,35 @@
             <v-spacer />
           </v-toolbar>
           <v-card-text>
-            <v-form>
-              <v-text-field label="Username" name="username" type="text" v-model="username" />
-              <v-text-field label="Email" name="email" type="text" v-model="email" />
+            <v-form ref="form" v-model="valid">
+              <v-text-field
+                label="Username"
+                name="username"
+                type="text"
+                :rules="[rules.required]"
+                v-model="username"
+              />
+              <v-text-field
+                label="Email"
+                name="email"
+                type="text"
+                :rules="[rules.required, rules.emailValid] "
+                v-model="email"
+              />
 
               <v-text-field
                 id="password"
                 label="Password"
                 name="password"
                 type="password"
+                :rules="[rules.required, rules.min]"
                 v-model="password"
               />
             </v-form>
           </v-card-text>
           <v-card-actions>
             <v-spacer />
-            <v-btn v-on:click="register()">Send</v-btn>
+            <v-btn v-on:click="validate">Send</v-btn>
           </v-card-actions>
         </v-card>
       </v-col>
@@ -36,11 +49,24 @@ const fb = require("../../firebaseConfig");
 
 export default {
   data: () => ({
+    valid: true,
     email: "",
     password: "",
-    username: ""
+    username: "",
+    rules: {
+      required: value => !!value || "Required",
+      min: value => value.length >= 6 || "Min 6 characters",
+      emailValid: value =>
+        /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
+        "E-mail must be valid"
+    }
   }),
   methods: {
+    validate() {
+      if (this.$refs.form.validate()) {
+        this.register();
+      }
+    },
     register() {
       fb.auth
         .createUserWithEmailAndPassword(this.email, this.password)

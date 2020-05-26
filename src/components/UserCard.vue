@@ -1,5 +1,5 @@
 <template>
-  <v-list-item two-line :class="miniVariant">
+  <v-list-item two-line>
     <v-list-item-avatar>
       <img :src="avatar" />
     </v-list-item-avatar>
@@ -22,11 +22,16 @@ const fb = require("../../firebaseConfig");
 
 export default {
   name: "UserCard",
-  data: () => ({
-    miniVariant: true,
-    username: fb.auth.currentUser.displayName,
-    email: fb.auth.currentUser.email,
-    avatar: fb.auth.currentUser.photoURL
-  })
+  computed: {
+    username: () => {
+      return fb.auth.currentUser.displayName;
+    },
+    email: () => {
+      return fb.auth.currentUser.email;
+    },
+    avatar: () => {
+      return fb.auth.currentUser.photoURL;
+    }
+  }
 };
 </script>
