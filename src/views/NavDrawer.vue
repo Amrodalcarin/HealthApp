@@ -19,12 +19,12 @@
           <v-list-item-title>Profile</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item @click="searchFood()">
+      <v-list-item @click="searchRecipe()">
         <v-list-item-icon>
           <v-icon>fa-leaf</v-icon>
         </v-list-item-icon>
         <v-list-item-content>
-          <v-list-item-title>Food</v-list-item-title>
+          <v-list-item-title>Recipes</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
       <v-list-item @click="logout()">
@@ -58,9 +58,9 @@ export default {
         name: "Profile"
       });
     },
-    searchFood() {
+    searchRecipe() {
       this.$router.push({
-        name: "SearchFood"
+        name: "SearchRecipes"
       });
     },
     logout() {

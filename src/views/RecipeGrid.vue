@@ -3,10 +3,10 @@
     <v-layout row wrap>
       <v-flex d-flex xs12 sm12 md12 height="10px">
         <v-layout row wrap>
-          <v-flex d-flex xs12 sm2 md2>
+          <v-flex d-flex xs12 sm4 md2>
             <UserHome />
           </v-flex>
-          <v-flex d-flex xs12 sm10 md10>
+          <v-flex d-flex xs12 sm8 md10>
             <v-card min-width="100%" class="d-flex flex-column justify-space-around">
               <v-card-text>
                 <CalorieSetter />
@@ -26,20 +26,16 @@
               prepend-inner-icon="fa-search"
               solo-inverted
               v-model="searchWord"
-              v-on:keydown.enter="searchFood(searchWord)"
+              v-on:keydown.enter="searchRecipe(searchWord)"
             ></v-text-field>
-            <v-card-title>The nutrients that appear are always for 100g of the food or the amount that appears in the title</v-card-title>
             <v-row justify="center">
-              <v-col v-for="(each, n) in foodResponse.hints" :key="n" cols="auto">
-                <FoodItem
-                  :foodPhoto="foodResponse.hints[n].food.image"
-                  :foodName="foodResponse.hints[n].food.label"
-                  :foodCal="foodResponse.hints[n].food.nutrients.ENERC_KCAL"
-                  :foodProt="foodResponse.hints[n].food.nutrients.PROCNT"
-                  :foodFat="foodResponse.hints[n].food.nutrients.FAT"
-                  :foodCarb="foodResponse.hints[n].food.nutrients.CHOCDF"
-                  :foodFib="foodResponse.hints[n].food.nutrients.FIBTG"
-                  :foodId="foodResponse.hints[n].food.foodId"
+              <v-col v-for="(each, n) in recipeResponse.hits" :key="n" cols="auto">
+                <RecipeItem
+                  :recipePhoto="recipeResponse.hits[n].recipe.image"
+                  :recipeName="recipeResponse.hits[n].recipe.label"
+                  :recipeCal="recipeResponse.hits[n].recipe.calories"
+                  :recipeWeight="recipeResponse.hits[n].recipe.totalWeight"
+                  :recipeId="recipeResponse.hits[n].recipe.uri"
                 />
               </v-col>
             </v-row>
@@ -53,44 +49,44 @@
 
 <script>
 import axios from "axios";
-import FoodItem from "./../components/FoodItem";
+import RecipeItem from "./../components/RecipeItem";
 import CircularLoad from "./../components/CircularLoad";
 import CalorieSetter from "./../components/CalorieSetter";
 import UserHome from "./../components/UserHome";
+
 const edamam = require("../../edamamConfig");
 
 export default {
   components: {
-    FoodItem,
+    RecipeItem,
     CircularLoad,
     CalorieSetter,
     UserHome
   },
   data: () => ({
-    foodResponse: [],
+    recipeResponse: [],
     searchWord: "",
     loading: false
   }),
   mounted() {},
   methods: {
-    searchFood(val) {
+    searchRecipe(val) {
       this.loading = true;
       axios
         .get(
-          "https://api.edamam.com/api/food-database/parser?ingr=" +
+          "https://api.edamam.com/search?q=" +
             val +
             "&app_id=" +
-            edamam.api_keyFood +
+            edamam.app_idRecipe +
             "&app_key=" +
-            edamam.app_idFood,
+            edamam.api_keyRecipe,
           { crossdomain: true }
         )
-        .then(response => (this.foodResponse = response.data))
+        .then(response => (this.recipeResponse = response.data))
         .then(() => (this.loading = false))
         .catch(error => console.log(error));
     }
-  },
-  watch: {}
+  }
 };
 </script>
 

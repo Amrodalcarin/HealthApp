@@ -5,7 +5,8 @@ import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import Profile from "../views/Profile.vue";
 import Food from "../views/Food.vue";
-import FoodGrid from "../views/FoodGrid.vue";
+import RecipeGrid from "../views/RecipeGrid.vue";
+import Recipe from "../views/Recipe.vue";
 import Messages from "../views/Messages.vue";
 const fb = require("../../firebaseConfig");
 
@@ -41,16 +42,22 @@ const routes = [
     component: Profile
   },
   {
-    path: "/food/:foodId",
+    path: "/food",
     name: "Food",
     component: Food,
     props: true
   },
   {
-    path: "/searchfood",
-    name: "SearchFood",
-    component: FoodGrid
-  }
+    path: "/searchrecipes",
+    name: "SearchRecipes",
+    component: RecipeGrid
+  },
+  {
+    path: "/recipe",
+    name: "Recipe",
+    component: Recipe,
+    props: true
+  },
 ];
 
 const router = new VueRouter({

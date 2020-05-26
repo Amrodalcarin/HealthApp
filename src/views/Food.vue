@@ -21,7 +21,17 @@
           </v-flex>
           <v-flex d-flex xs12 sm12 md12>
             <v-card min-width="100%" class="d-flex flex-column justify-space-around">
-              <v-card-text>Aquí iran etiquetas del alimento</v-card-text>
+              <v-card-text>
+                <v-card-title>Healthy labels</v-card-title>
+                <v-layout row wrap>
+                  <v-flex d-flex v-for="(each, n) in nutrientsResponse.healthLabels" :key="n">
+                    <v-chip class="py-6 px-4" color="secondary" label>
+                      {{nutrientsResponse.healthLabels[n].replace(/_/g, " ")}}
+                      <v-icon right>fa-leaf</v-icon>
+                    </v-chip>
+                  </v-flex>
+                </v-layout>
+              </v-card-text>
             </v-card>
           </v-flex>
         </v-layout>
@@ -40,10 +50,18 @@
       <v-flex d-flex xs12 sm3 md4>
         <v-card min-width="100%" class="d-flex flex-column justify-space-around">
           <v-card-text>
-            <v-card-title>Recetas para este alimento</v-card-title>Aqui recetas y tal
-            <!-- <ul v-for="(each, n) in nutrientsResponse.totalNutrients" :key="n">
-              <li>{{nutrientsResponse.totalNutrients[n].label}}: {{nutrientsResponse.totalNutrients[n].quantity.toFixed(2)}} {{nutrientsResponse.totalNutrients[n].unit}}</li>
-            </ul>-->
+            <v-card-title>Recetas para este alimento</v-card-title>
+            <v-row justify="center">
+              <v-col v-for="(each, n) in recipeResponse.hits" :key="n" cols="auto">
+                <RecipeItem
+                  :recipePhoto="recipeResponse.hits[n].recipe.image"
+                  :recipeName="recipeResponse.hits[n].recipe.label"
+                  :recipeCal="recipeResponse.hits[n].recipe.calories"
+                  :recipeWeight="recipeResponse.hits[n].recipe.totalWeight"
+                  :recipeId="recipeResponse.hits[n].recipe.uri"
+                />
+              </v-col>
+            </v-row>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -54,25 +72,36 @@
 <script>
 import axios from "axios";
 import CircularLoad from "./../components/CircularLoad";
+import RecipeItem from "./../components/RecipeItem";
+import { mapGetters } from "vuex";
+
+const edamam = require("../../edamamConfig");
 
 export default {
   components: {
-    CircularLoad
+    CircularLoad,
+    RecipeItem
   },
   data: () => ({
     foodResponse: [],
     nutrientsResponse: {},
+    recipeResponse: [],
     loading: false
   }),
   mounted() {
-    this.getFood(this.foodId);
-    this.getNutrients(this.foodId);
+    this.getFood(this.foodID);
+    this.getNutrients(this.foodID);
+    this.searchRecipe(this.foodName);
+    console.log("el nombre que me está llegando " + this.foodName);
   },
   methods: {
     getNutrients(val) {
       axios
         .post(
-          "https://api.edamam.com/api/food-database/nutrients?app_id=2642ad12&app_key=320f1c564ed52ec564d56995ef7089b2",
+          "https://api.edamam.com/api/food-database/nutrients?app_id=" +
+            edamam.app_idFood +
+            "&app_key=" +
+            edamam.api_keyFood,
           {
             ingredients: [
               {
@@ -94,14 +123,34 @@ export default {
         .get(
           "https://api.edamam.com/api/food-database/parser?ingr=" +
             val +
-            "&app_id=2642ad12&app_key=320f1c564ed52ec564d56995ef7089b2",
+            "&app_id=" +
+            edamam.app_idFood +
+            "&app_key=" +
+            edamam.api_keyFood,
           { crossdomain: true }
         )
         .then(response => (this.foodResponse = response.data))
         .catch(error => console.log(error));
+    },
+    searchRecipe(val) {
+      this.loading = true;
+      axios
+        .get(
+          "https://api.edamam.com/search?q=" +
+            val +
+            "&app_id=" +
+            edamam.app_idRecipe +
+            "&app_key=" +
+            edamam.api_keyRecipe +
+            "&from=0&to=2",
+          { crossdomain: true }
+        )
+        .then(response => (this.recipeResponse = response.data))
+        .then(() => (this.loading = false))
+        .catch(error => console.log(error));
     }
   },
-  props: ["foodId"]
+  computed: mapGetters(["foodID", "foodName"])
 };
 </script>
 
