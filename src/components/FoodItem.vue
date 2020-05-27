@@ -46,7 +46,7 @@ export default {
     "foodId"
   ],
   methods: {
-    ...mapActions(["setFoodId"]),
+    ...mapActions(["setFoodId", "setCalories"]),
     goFood(val) {
       this.setFoodId(val);
       this.$router.push({
@@ -63,6 +63,7 @@ export default {
         "consumedDayCalories",
         parseFloat(actualConsumedCalories) + newConsumedCaloriesPercentaje
       );
+      this.setCalories(localStorage.getItem("consumedDayCalories"));
     }
   }
 };

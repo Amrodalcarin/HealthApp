@@ -34,7 +34,7 @@ export default {
   data: () => ({ logoNutricare: require("@/assets/nutricare_logo.png") }),
   props: ["recipePhoto", "recipeName", "recipeCal", "recipeWeight", "recipeId"],
   methods: {
-    ...mapActions(["setRecipeId"]),
+    ...mapActions(["setRecipeId", "setCalories"]),
     goRecipe(val) {
       this.setRecipeId(val);
       this.$router.push({
@@ -51,6 +51,7 @@ export default {
         "consumedDayCalories",
         parseFloat(actualConsumedCalories) + newConsumedCaloriesPercentaje
       );
+      this.setCalories(localStorage.getItem("consumedDayCalories"));
     }
   }
 };

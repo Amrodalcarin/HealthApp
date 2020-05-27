@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer v-model="drawer" absolute dark>
+  <v-navigation-drawer v-model="drawer" absolute stateless dark>
     <UserCard />
     <v-divider></v-divider>
     <v-list>

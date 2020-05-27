@@ -1,19 +1,12 @@
 <template>
   <v-container fluid grid-list-md fill-height class="overflow-y-auto">
     <v-layout row wrap>
-      <v-flex d-flex xs12 sm12 md12 height="10px">
-        <v-layout row wrap>
-          <v-flex d-flex xs12 sm4 md2>
-            <UserHome />
-          </v-flex>
-          <v-flex d-flex xs12 sm8 md10>
-            <v-card min-width="100%" class="d-flex flex-column justify-space-around">
-              <v-card-text>
-                <CalorieSetter />
-              </v-card-text>
-            </v-card>
-          </v-flex>
-        </v-layout>
+      <v-flex d-flex xs12 sm12 md12>
+        <v-card min-width="100%" class="d-flex flex-column justify-space-around">
+          <v-card-text>
+            <CalorieSetter />
+          </v-card-text>
+        </v-card>
       </v-flex>
       <v-flex d-flex xs12 sm12 md12>
         <v-card min-width="100%" class="d-flex flex-column justify-space-around">
@@ -56,15 +49,15 @@ import axios from "axios";
 import FoodItem from "./../components/FoodItem";
 import CircularLoad from "./../components/CircularLoad";
 import CalorieSetter from "./../components/CalorieSetter";
-import UserHome from "./../components/UserHome";
+import { mapGetters } from "vuex";
+
 const edamam = require("../../edamamConfig");
 
 export default {
   components: {
     FoodItem,
     CircularLoad,
-    CalorieSetter,
-    UserHome
+    CalorieSetter
   },
   data: () => ({
     foodResponse: [],
@@ -90,7 +83,9 @@ export default {
         .catch(error => console.log(error));
     }
   },
-  watch: {}
+  computed: {
+    ...mapGetters(["calorieComponentKey"])
+  }
 };
 </script>
 
