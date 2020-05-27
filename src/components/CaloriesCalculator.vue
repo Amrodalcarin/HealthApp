@@ -2,7 +2,7 @@
   <v-card min-width="100%" class="d-flex flex-column justify-space-around">
     <v-card-text>
       <v-card-title>Daily calorie calculator</v-card-title>
-      <CalorieSetter />
+      <CalorieSetter :key="calorieComponentKey" />
       <v-select :items="genderItems" filled v-model="gender" label="Gender"></v-select>
       <v-text-field type="number" v-model="weight" label="Weight (Kg)"></v-text-field>
       <v-text-field type="number" v-model="height" label="Height (Cm)"></v-text-field>
@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 import CalorieSetter from "./CalorieSetter";
 
 export default {
@@ -50,6 +51,7 @@ export default {
     }
   }),
   methods: {
+    ...mapActions(["setCalorieComponentKey"]),
     calculateCalories() {
       let newDayCaloreis = 0;
 
@@ -69,7 +71,11 @@ export default {
       localStorage.setItem("caloriesSetted", true);
       localStorage.setItem("consumedDayCalories", 0);
       localStorage.setItem("totalDayCalories", newDayCaloreis);
+      this.setCalorieComponentKey();
     }
+  },
+  computed: {
+    ...mapGetters(["calorieComponentKey"])
   }
 };
 </script>

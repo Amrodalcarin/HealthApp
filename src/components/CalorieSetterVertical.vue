@@ -1,6 +1,6 @@
 <template>
   <v-layout row wrap justify-space-around class="mb-4">
-    <v-flex d-flex xs12 sm12 md2>
+    <v-flex d-flex xs12 sm12 md12>
       <v-col align="center">
         <v-progress-circular
           :rotate="-90"
@@ -13,10 +13,10 @@
         <v-card-text class="font-weight-bold">Target: {{ parseInt(totalDayCalories) }} Kcal</v-card-text>
       </v-col>
     </v-flex>
-    <v-flex d-flex xs12 sm12 md4>
+    <v-flex d-flex xs12 sm12 md12>
       <v-text-field type="number" v-model="newAddCalories" label="Calories"></v-text-field>
     </v-flex>
-    <v-flex d-flex xs12 sm12 md2>
+    <v-flex d-flex xs12 sm12 md12>
       <v-layout row wrap>
         <v-flex d-flex xs12 sm12 md12>
           <v-btn

@@ -1,19 +1,12 @@
 <template>
   <v-container fluid grid-list-md fill-height class="overflow-y-auto">
     <v-layout row wrap>
-      <v-flex d-flex xs12 sm12 md12 height="10px">
-        <v-layout row wrap>
-          <v-flex d-flex xs12 sm4 md2>
-            <UserHome />
-          </v-flex>
-          <v-flex d-flex xs12 sm8 md10>
-            <v-card min-width="100%" class="d-flex flex-column justify-space-around">
-              <v-card-text>
-                <CalorieSetter />
-              </v-card-text>
-            </v-card>
-          </v-flex>
-        </v-layout>
+      <v-flex d-flex xs12 sm12 md12>
+        <v-card min-width="100%" class="d-flex flex-column justify-space-around">
+          <v-card-text>
+            <CalorieSetter />
+          </v-card-text>
+        </v-card>
       </v-flex>
       <v-flex d-flex xs12 sm12 md12>
         <v-card min-width="100%" class="d-flex flex-column justify-space-around">
@@ -52,7 +45,6 @@ import axios from "axios";
 import RecipeItem from "./../components/RecipeItem";
 import CircularLoad from "./../components/CircularLoad";
 import CalorieSetter from "./../components/CalorieSetter";
-import UserHome from "./../components/UserHome";
 
 const edamam = require("../../edamamConfig");
 
@@ -60,8 +52,7 @@ export default {
   components: {
     RecipeItem,
     CircularLoad,
-    CalorieSetter,
-    UserHome
+    CalorieSetter
   },
   data: () => ({
     recipeResponse: [],

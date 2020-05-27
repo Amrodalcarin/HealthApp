@@ -1,7 +1,7 @@
 <template>
   <v-container fluid grid-list-md fill-height>
     <CircularLoad v-if="loading" />
-    <v-layout row wrap>
+    <v-layout row wrap v-if="!loading">
       <v-flex d-flex xs12 sm6 md4>
         <v-layout row wrap>
           <v-flex d-flex xs12 sm12 md12>

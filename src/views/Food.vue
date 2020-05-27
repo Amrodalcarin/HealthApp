@@ -1,7 +1,7 @@
 <template>
   <v-container fluid grid-list-md fill-height>
     <CircularLoad v-if="loading" />
-    <v-layout row wrap>
+    <v-layout row wrap v-if="!loading">
       <v-flex d-flex xs12 sm6 md4>
         <v-layout row wrap>
           <v-flex d-flex xs12 sm12 md12>
@@ -50,7 +50,7 @@
       <v-flex d-flex xs12 sm3 md4>
         <v-card min-width="100%" class="d-flex flex-column justify-space-around">
           <v-card-text>
-            <v-card-title>Recetas para este alimento</v-card-title>
+            <v-card-title>Recommended recipes for this food</v-card-title>
             <v-row justify="center">
               <v-col v-for="(each, n) in recipeResponse.hits" :key="n" cols="auto">
                 <RecipeItem
@@ -86,13 +86,12 @@ export default {
     foodResponse: [],
     nutrientsResponse: {},
     recipeResponse: [],
-    loading: false
+    loading: true
   }),
   mounted() {
     this.getFood(this.foodID);
     this.getNutrients(this.foodID);
     this.searchRecipe(this.foodName);
-    console.log("el nombre que me está llegando " + this.foodName);
   },
   methods: {
     getNutrients(val) {
@@ -150,7 +149,9 @@ export default {
         .catch(error => console.log(error));
     }
   },
-  computed: mapGetters(["foodID", "foodName"])
+  computed: {
+    ...mapGetters(["foodID", "foodName"])
+  }
 };
 </script>
 
